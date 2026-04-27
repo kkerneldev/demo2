@@ -29,6 +29,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:va
 @keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideInLeft{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulse-dot{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
+@keyframes dropdownFade{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
 .animate-fadeup{animation:fadeUp .8s cubic-bezier(.22,1,.36,1) both}
 .d1{animation-delay:.1s}.d2{animation-delay:.22s}.d3{animation-delay:.34s}.d4{animation-delay:.46s}.d5{animation-delay:.58s}
@@ -52,6 +53,69 @@ nav{
 .social-nav svg{width:13px;height:13px}
 .btn-nav{background:var(--ink);color:var(--white);padding:.55rem 1.3rem;border-radius:3px;font-size:.8rem;text-decoration:none;letter-spacing:.07em;text-transform:uppercase;transition:background .2s}
 .btn-nav:hover{background:var(--sage)}
+
+/* ── Dropdown nav ── */
+.nav-item-dropdown{position:relative}
+.nav-item-dropdown > a{
+  display:flex;align-items:center;gap:.3rem;
+}
+.nav-item-dropdown > a::after{
+  content:'';
+  display:inline-block;
+  width:0;height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:4px solid var(--muted);
+  transition:transform .2s, border-top-color .2s;
+  margin-top:1px;
+}
+.nav-item-dropdown:hover > a::after{
+  transform:rotate(180deg);
+  border-top-color:var(--sage);
+}
+.nav-item-dropdown > a:hover{color:var(--ink)}
+
+.nav-dropdown{
+  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:10px;
+  box-shadow:0 16px 48px rgba(14,26,15,.13);
+  min-width:240px;
+  padding:.5rem;
+  display:none;
+  z-index:300;
+  animation:dropdownFade .22s cubic-bezier(.22,1,.36,1) both;
+}
+.nav-item-dropdown:hover .nav-dropdown{display:block}
+
+/* small arrow above dropdown */
+.nav-dropdown::before{
+  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  width:11px;height:11px;background:var(--white);
+  border-left:1px solid var(--border);border-top:1px solid var(--border);
+  transform:translateX(-50%) rotate(45deg);
+}
+
+.nav-dropdown a{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.65rem .9rem;border-radius:7px;
+  text-decoration:none;color:var(--ink);
+  font-size:.82rem;font-weight:400;letter-spacing:.03em;text-transform:none;
+  transition:background .18s, color .18s;
+}
+.nav-dropdown a:hover{background:var(--sage-pale);color:var(--sage)}
+.nav-dropdown a .dd-icon{
+  width:30px;height:30px;border-radius:6px;
+  background:var(--sage-pale);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0;
+  transition:background .18s;
+}
+.nav-dropdown a:hover .dd-icon{background:var(--sage);filter:grayscale(1) brightness(10)}
+.nav-dropdown hr{border:none;border-top:1px solid var(--border);margin:.35rem 0}
+
+/* ── end dropdown ── */
 
 .hero{
   display:grid;grid-template-columns:1fr 1fr;min-height:90vh;
@@ -306,13 +370,39 @@ footer{
 <nav>
   <a class="logo" href="#">
     Yeni<span class="accent">Dönem</span>
-    <span class="sub">Biorezonans Mərkəzi</span>
+    <span class="sub">Biorezonans Merkezi</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#">Xidmətlər</a></li>
-    <li><a href="#">Haqqımızda</a></li>
-    <li><a href="#">Rəylər</a></li>
-    <li><a href="#">Əlaqə</a></li>
+    <li class="nav-item-dropdown">
+      <a href="#services">Hizmetler</a>
+      <div class="nav-dropdown">
+        <a href="#services">
+          <span class="dd-icon">⚡</span>Biorezonans Analizi
+        </a>
+        <a href="#services">
+          <span class="dd-icon">🌱</span>Detoks Programları
+        </a>
+        <a href="#services">
+          <span class="dd-icon">💫</span>Alerji Terapisi
+        </a>
+        <a href="#services">
+          <span class="dd-icon">🧘</span>Stres &amp; Denge
+        </a>
+        <a href="#services">
+          <span class="dd-icon">🔬</span>Parazit Terapisi
+        </a>
+        <a href="#services">
+          <span class="dd-icon">✨</span>Bağışıklık Desteği
+        </a>
+        <hr>
+        <a href="#apply" style="color:var(--sage);font-weight:500">
+          <span class="dd-icon" style="background:var(--sage);filter:grayscale(1) brightness(10)">📋</span>Randevu Al →
+        </a>
+      </div>
+    </li>
+    <li><a href="#">Hakkımızda</a></li>
+    <li><a href="#">Yorumlar</a></li>
+    <li><a href="#">İletişim</a></li>
   </ul>
   <div class="nav-actions">
     <div class="social-nav">
@@ -326,21 +416,21 @@ footer{
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
       </a>
     </div>
-    <a href="#apply" class="btn-nav">Müraciət et</a>
+    <a href="#apply" class="btn-nav">Randevu Al</a>
   </div>
 </nav>
 
 <section class="hero">
   <div class="hero-left">
-    <div class="hero-tag animate-fadeup d1"><span class="hero-tag-line"></span>Bütöv Sağlıq Mərkəzi · Bakı</div>
-    <h1 class="animate-fadeup d2">Bədəninizin<br><em>tezliyini</em><br><strong>kəşfedin</strong></h1>
-    <p class="hero-desc animate-fadeup d3">Biorezonans terapiya ilə orqanizminizin elektromaqnit sahəsini analiz edirik. Fərdi protokollarla sağlığınızı dəstəkləyirik.</p>
+    <div class="hero-tag animate-fadeup d1"><span class="hero-tag-line"></span>Bütünleşik Sağlık Merkezi · İstanbul</div>
+    <h1 class="animate-fadeup d2">Vücudunuzun<br><em>frekansını</em><br><strong>keşfedin</strong></h1>
+    <p class="hero-desc animate-fadeup d3">Biorezonans terapisi ile organizmanızın elektromanyetik alanını analiz ediyoruz. Kişisel protokollarla sağlığınızı destekliyoruz.</p>
     <div class="hero-btns animate-fadeup d4">
       <a href="#apply" class="btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        Müraciət et
+        Randevu Al
       </a>
-      <a href="#services" class="btn-outline">Xidmətlər</a>
+      <a href="#services" class="btn-outline">Hizmetler</a>
     </div>
     <div class="hero-trust animate-fadeup d5">
       <div class="trust-dots">
@@ -349,7 +439,7 @@ footer{
         <div class="trust-dot">N</div>
         <div class="trust-dot">+</div>
       </div>
-      <span class="trust-text"><strong>2000+</strong> razı müştəri</span>
+      <span class="trust-text"><strong>2000+</strong> memnun müşteri</span>
     </div>
   </div>
   <div class="hero-right">
@@ -364,37 +454,37 @@ footer{
     </div>
     <div class="hero-float-card">
       <div class="float-num">12+</div>
-      <div class="float-label">İllik Təcrübə</div>
+      <div class="float-label">Yıllık Deneyim</div>
     </div>
-    <div class="hero-float-card2">
-      <div class="float2-label">Hazırda aktiv</div>
+    <div class="hero-float-card2" id="statusCard">
+      <div class="float2-label" id="statusLabel">Durum</div>
       <div class="float2-row">
-        <div class="live-dot"></div>
-        <span class="float2-text">Seans aparılır</span>
+        <div class="live-dot" id="statusDot"></div>
+        <span class="float2-text" id="statusText">Open</span>
       </div>
     </div>
   </div>
 </section>
 
 <div class="stats-bar">
-  <div class="stat-item"><div class="stat-num">12+</div><div class="stat-lbl">İllik Təcrübə</div></div>
+  <div class="stat-item"><div class="stat-num">12+</div><div class="stat-lbl">Yıllık Deneyim</div></div>
   <div class="stat-item"><div class="stat-num">2000+</div><div class="stat-lbl">Tamamlanan Seans</div></div>
-  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-lbl">Müştəri Məmnuniyyəti</div></div>
-  <div class="stat-item"><div class="stat-num">15+</div><div class="stat-lbl">Terapi Sahəsi</div></div>
+  <div class="stat-item"><div class="stat-num">98%</div><div class="stat-lbl">Müşteri Memnuniyeti</div></div>
+  <div class="stat-item"><div class="stat-num">15+</div><div class="stat-lbl">Terapi Alanı</div></div>
 </div>
 
 <section class="services" id="services">
   <div class="section-head">
-    <div class="section-tag">Xidmətlərimiz</div>
-    <h2>Nə təklif edirik?</h2>
+    <div class="section-tag">Hizmetlerimiz</div>
+    <h2>Ne sunuyoruz?</h2>
   </div>
   <div class="services-grid">
-    <div class="svc-card"><div class="svc-icon">⚡</div><h3>Biorezonans Analizi</h3><p>Bədəninizin elektromaqnit tezliklərini ölçərək disbalansları aşkarlayırıq.</p></div>
-    <div class="svc-card"><div class="svc-icon">🌱</div><h3>Detoks Proqramları</h3><p>Fərdi detoks protokolları ilə toksinlərin orqanizmdən xaric olunmasını dəstəkləyirik.</p></div>
-    <div class="svc-card"><div class="svc-icon">💫</div><h3>Allerji Terapiyası</h3><p>Biorezonans ilə allergenlər müəyyən edilir, uyğunsuzluqlar aradan qaldırılır.</p></div>
-    <div class="svc-card"><div class="svc-icon">🧘</div><h3>Stress &amp; Balans</h3><p>Sinir sistemi balansını dəstəkləyən seanslarla stress və yorğunluğa həll tapırıq.</p></div>
-    <div class="svc-card"><div class="svc-icon">🔬</div><h3>Parazit Terapiyası</h3><p>Orqanizmdəki parazit yükünü müəyyən edib enerji səviyyəsində təmizləyirik.</p></div>
-    <div class="svc-card"><div class="svc-icon">✨</div><h3>İmmun Dəstəyi</h3><p>İmmun sisteminizi gücləndirəcək tezlik proqramları ilə sağlığınızı qoruyun.</p></div>
+    <div class="svc-card"><div class="svc-icon">⚡</div><h3>Biorezonans Analizi</h3><p>Vücudunuzun elektromanyetik frekanslarını ölçerek dengesizlikleri tespit ediyoruz.</p></div>
+    <div class="svc-card"><div class="svc-icon">🌱</div><h3>Detoks Programları</h3><p>Kişisel detoks protokolleri ile toksinlerin vücuttan atılmasını destekliyoruz.</p></div>
+    <div class="svc-card"><div class="svc-icon">💫</div><h3>Alerji Terapisi</h3><p>Biorezonans ile alerjenler belirlenir, uyumsuzluklar giderilir.</p></div>
+    <div class="svc-card"><div class="svc-icon">🧘</div><h3>Stres &amp; Denge</h3><p>Sinir sistemi dengesini destekleyen seanslarla stres ve yorgunluğa çözüm buluyoruz.</p></div>
+    <div class="svc-card"><div class="svc-icon">🔬</div><h3>Parazit Terapisi</h3><p>Vücuttaki parazit yükünü belirleyip enerji düzeyinde temizliyoruz.</p></div>
+    <div class="svc-card"><div class="svc-icon">✨</div><h3>Bağışıklık Desteği</h3><p>Bağışıklık sisteminizi güçlendirecek frekans programları ile sağlığınızı koruyun.</p></div>
   </div>
 </section>
 
@@ -402,80 +492,80 @@ footer{
   <div class="about-img-side">
     <div class="about-cert">
       <div class="cert-icon">🏆</div>
-      <div><div class="cert-text">BICOM® Sertifikatlı Mərkəz</div><div class="cert-sub">Beynəlxalq akkreditasiya</div></div>
+      <div><div class="cert-text">BICOM® Sertifikalı Merkez</div><div class="cert-sub">Uluslararası akreditasyon</div></div>
     </div>
     <div class="about-cert">
       <div class="cert-icon">👩‍⚕️</div>
-      <div><div class="cert-text">Ekspert Komanda</div><div class="cert-sub">12+ il təcrübə</div></div>
+      <div><div class="cert-text">Uzman Ekip</div><div class="cert-sub">12+ yıl deneyim</div></div>
     </div>
     <div class="about-cert">
       <div class="cert-icon">🔬</div>
-      <div><div class="cert-text">Müasir Texnologiya</div><div class="cert-sub">Yeni nəsil cihazlar</div></div>
+      <div><div class="cert-text">Modern Teknoloji</div><div class="cert-sub">Yeni nesil cihazlar</div></div>
     </div>
   </div>
   <div class="about-content">
-    <div class="section-tag">Haqqımızda</div>
-    <h2>Sağlığa bütöv<br>yanaşma</h2>
-    <p>2012-ci ildən bu yana biorezonans sahəsində ixtisaslaşmış komandamızla minlərlə müştəriyə xidmət göstərmişik. Müasir cihazlar və elmi protokollarla işləyirik.</p>
+    <div class="section-tag">Hakkımızda</div>
+    <h2>Sağlığa bütünleşik<br>bir yaklaşım</h2>
+    <p>2012'den bu yana biorezonans alanında uzmanlaşmış ekibimizle binlerce müşteriye hizmet verdik. Modern cihazlar ve bilimsel protokollerle çalışıyoruz.</p>
     <ul class="about-list">
-      <li>Sertifikatlı biorezonans mütəxəssisləri</li>
-      <li>BICOM® texnologiyası ilə işləyirik</li>
-      <li>Hər müştəriyə fərdi müalicə planı</li>
-      <li>Yan təsirsiz, qeyri-invaziv metod</li>
+      <li>Sertifikalı biorezonans uzmanları</li>
+      <li>BICOM® teknolojisi ile çalışıyoruz</li>
+      <li>Her müşteriye özel tedavi planı</li>
+      <li>Yan etkisiz, non-invaziv yöntem</li>
     </ul>
-    <a href="#apply" class="btn-primary" style="align-self:flex-start">Müraciət et →</a>
+    <a href="#apply" class="btn-primary" style="align-self:flex-start">Randevu Al →</a>
   </div>
 </section>
 
 <section class="testimonials">
   <div class="section-head">
-    <div class="section-tag">Rəylər</div>
-    <h2 style="color:#fff">Müştərilərimiz danışır</h2>
+    <div class="section-tag">Yorumlar</div>
+    <h2 style="color:#fff">Müşterilerimiz konuşuyor</h2>
   </div>
   <div class="testi-grid">
-    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"İllər boyu əziyyət çəkdiyim baş ağrıları biorezonans seanslarından sonra böyük ölçüdə azaldı."</blockquote><div class="testi-author">Aysel K. — Bakı</div></div>
-    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Allerji testləri heç nə göstərməmişdi, biorezonans ilə qida uyğunsuzluqlarımı kəşf etdim."</blockquote><div class="testi-author">Leyla M. — Sumqayıt</div></div>
-    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Detoks proqramından sonra enerji səviyyəm və yuxu keyfiyyətim inanılmaz yaxşılaşdı."</blockquote><div class="testi-author">Nigar R. — Bakı</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Yıllarca çektiğim baş ağrıları biorezonans seanslarından sonra büyük ölçüde azaldı."</blockquote><div class="testi-author">Aysel K. — İstanbul</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Alerji testleri hiçbir şey göstermemişti, biorezonans ile gıda uyumsuzluklarımı keşfettim."</blockquote><div class="testi-author">Leyla M. — İstanbul</div></div>
+    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Detoks programından sonra enerji seviyem ve uyku kalitem inanılmaz derecede iyileşti."</blockquote><div class="testi-author">Nigar R. — İstanbul</div></div>
   </div>
 </section>
 
 <section class="apply-section" id="apply">
   <div class="section-head">
-    <div class="section-tag">Müraciət</div>
-    <h2>Seans üçün müraciət edin</h2>
+    <div class="section-tag">Başvuru</div>
+    <h2>Seans için başvurun</h2>
   </div>
   <div class="apply-inner">
     <div class="apply-header">
       <div class="apply-header-icon">📋</div>
       <div>
-        <h3>Müraciət Formu</h3>
-        <p>Formu doldurun, 24 saat ərzində sizinlə əlaqə saxlayacağıq</p>
+        <h3>Başvuru Formu</h3>
+        <p>Formu doldurun, 24 saat içinde sizinle iletişime geçeceğiz</p>
       </div>
     </div>
     <div class="apply-form">
       <div class="form-row">
         <div class="form-group"><label>Ad Soyad</label><input type="text" placeholder="Adınız Soyadınız"></div>
-        <div class="form-group"><label>Telefon</label><input type="tel" placeholder="+994 50 000 00 00"></div>
+        <div class="form-group"><label>Telefon</label><input type="tel" placeholder="+90 000 000 00 00"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label>E-poçt</label><input type="email" placeholder="email@example.com"></div>
-        <div class="form-group"><label>Xidmət seçin</label>
+        <div class="form-group"><label>E-posta</label><input type="email" placeholder="email@example.com"></div>
+        <div class="form-group"><label>Hizmet Seçin</label>
           <select>
             <option value="">Seçin...</option>
             <option>Biorezonans Analizi</option>
-            <option>Detoks Proqramı</option>
-            <option>Allerji Terapiyası</option>
-            <option>Stress &amp; Balans</option>
-            <option>Parazit Terapiyası</option>
-            <option>İmmun Dəstəyi</option>
+            <option>Detoks Programı</option>
+            <option>Alerji Terapisi</option>
+            <option>Stres &amp; Denge</option>
+            <option>Parazit Terapisi</option>
+            <option>Bağışıklık Desteği</option>
           </select>
         </div>
       </div>
-      <div class="form-group"><label>Şikayət / Mesaj</label><textarea placeholder="Probleminizi qısaca izah edin..."></textarea></div>
-      <div class="form-note">🔒 Məlumatlarınız gizli saxlanılır. Müraciətdən sonra 24 saat ərzində sizinlə əlaqə saxlayacağıq.</div>
+      <div class="form-group"><label>Şikayet / Mesaj</label><textarea placeholder="Sorununuzu kısaca açıklayın..."></textarea></div>
+      <div class="form-note">🔒 Bilgileriniz gizli tutulmaktadır. Başvurunuzdan sonra 24 saat içinde sizinle iletişime geçeceğiz.</div>
       <button class="btn-apply">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        Müraciəti Göndər
+        Başvuruyu Gönder
       </button>
     </div>
   </div>
@@ -483,65 +573,61 @@ footer{
 
 <section class="contact-section">
   <div class="section-head">
-    <div class="section-tag">Əlaqə</div>
-    <h2>Bizimlə əlaqə</h2>
+    <div class="section-tag">İletişim</div>
+    <h2>Bizimle iletişime geçin</h2>
   </div>
   <div class="contact-grid">
     <div class="contact-info">
-      <h3>Məlumatlar</h3>
-      <div class="contact-item"><div class="c-icon">📍</div><div class="c-text"><strong>Ünvan</strong>Nizami küçəsi 12, Bakı, Azərbaycan</div></div>
-      <div class="contact-item"><div class="c-icon">📞</div><div class="c-text"><strong>Telefon</strong>+994 12 555 00 00</div></div>
-      <div class="contact-item"><div class="c-icon">📧</div><div class="c-text"><strong>E-poçt</strong>info@yenidonem.az</div></div>
-      <div class="contact-item"><div class="c-icon">🕐</div><div class="c-text"><strong>İş saatları</strong>B.e–Cümə: 09:00–18:00 · Şənbə: 10:00–15:00</div></div>
+      <h3>Bilgiler</h3>
+      <div class="contact-item"><div class="c-icon">📍</div><div class="c-text"><strong>Adres</strong>Osmanağa, Bekçi Sk. No:10, 34714 Kadıköy/İstanbul, Türkiye</div></div>
+      <div class="contact-item"><div class="c-icon">📞</div><div class="c-text"><strong>Telefon</strong>+90 534 849 13 83</div></div>
+      <div class="contact-item"><div class="c-icon">📧</div><div class="c-text"><strong>E-posta</strong>info@yenidonem.az</div></div>
+      <div class="contact-item"><div class="c-icon">🕐</div><div class="c-text"><strong>Çalışma saatleri</strong>Pzt–Cmt: 09:00–18:00 · Paz: Kapalı</div></div>
 
       <div style="margin-top:1.2rem">
-        <div style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;font-weight:500">Sosial şəbəkələr</div>
+        <div style="font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;font-weight:500">Sosyal medya</div>
         <div class="social-links">
-          <a href="https://instagram.com" class="social-btn">
+          <a href="https://www.instagram.com/yenidonem_rezonans?igsh=MWh0NmRkZzJkMWFqaA==" class="social-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>
             Instagram
           </a>
-          <a href="https://facebook.com" class="social-btn">
+          <a href="https://www.facebook.com/676416458889062/" class="social-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
             Facebook
           </a>
-          <a href="https://wa.me/994505550000" class="social-btn">
+          <a href="https://wa.me/905348491383" class="social-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
             WhatsApp
-          </a>
-          <a href="https://tiktok.com" class="social-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg>
-            TikTok
           </a>
         </div>
       </div>
 
-      <a href="https://maps.google.com/?q=Nizami+küçəsi+12+Bakı" class="map-embed">
+      <a href="https://maps.google.com/?q=Osmanağa+Bekçi+Sk+No:10+Kadıköy+İstanbul" class="map-embed">
         <div class="map-pin">📍</div>
-        <div class="map-text">Nizami küçəsi 12, Bakı<br><span style="font-size:.72rem;opacity:.7">Xəritədə görmək üçün klikləyin</span></div>
+        <div class="map-text">Bekçi Sk. No:10, Kadıköy/İstanbul<br><span style="font-size:.72rem;opacity:.7">Haritada görmek için tıklayın</span></div>
         <div class="map-link">Google Maps →</div>
       </a>
     </div>
 
     <div>
       <div style="background:var(--sage-pale);border-radius:8px;padding:2rem;border:1px solid var(--border)">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink);margin-bottom:1rem">Sürətli müraciət</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--ink);margin-bottom:1rem">Hızlı İletişim</div>
         <div style="display:flex;flex-direction:column;gap:.85rem">
-          <a href="tel:+994125550000" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--white);border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--ink);transition:all .2s;font-size:.9rem">
+          <a href="tel:+905348491383" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--white);border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--ink);transition:all .2s;font-size:.9rem">
             <span style="width:38px;height:38px;border-radius:50%;background:var(--sage-pale);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📞</span>
-            <div><div style="font-weight:500;font-size:.88rem">Zəng edin</div><div style="font-size:.78rem;color:var(--muted)">+994 12 555 00 00</div></div>
+            <div><div style="font-weight:500;font-size:.88rem">Arayın</div><div style="font-size:.78rem;color:var(--muted)">+90 534 849 13 83</div></div>
           </a>
-          <a href="https://wa.me/994505550000" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--white);border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--ink);transition:all .2s;font-size:.9rem">
+          <a href="https://wa.me/905348491383" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--white);border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--ink);transition:all .2s;font-size:.9rem">
             <span style="width:38px;height:38px;border-radius:50%;background:#E8F9EF;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">💬</span>
-            <div><div style="font-weight:500;font-size:.88rem">WhatsApp</div><div style="font-size:.78rem;color:var(--muted)">Ani cavab</div></div>
+            <div><div style="font-weight:500;font-size:.88rem">WhatsApp</div><div style="font-size:.78rem;color:var(--muted)">Anında yanıt</div></div>
           </a>
-          <a href="https://instagram.com" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--white);border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--ink);transition:all .2s;font-size:.9rem">
+          <a href="https://www.instagram.com/yenidonem_rezonans?igsh=MWh0NmRkZzJkMWFqaA==" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--white);border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--ink);transition:all .2s;font-size:.9rem">
             <span style="width:38px;height:38px;border-radius:50%;background:#FDE8F5;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📸</span>
-            <div><div style="font-weight:500;font-size:.88rem">Instagram</div><div style="font-size:.78rem;color:var(--muted)">@yenidonembiorezonans</div></div>
+            <div><div style="font-weight:500;font-size:.88rem">Instagram</div><div style="font-size:.78rem;color:var(--muted)">@yenidonem_rezonans</div></div>
           </a>
           <a href="#apply" style="display:flex;align-items:center;gap:.9rem;padding:1rem;background:var(--ink);border-radius:6px;border:1px solid transparent;text-decoration:none;color:var(--white);font-size:.9rem">
             <span style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📋</span>
-            <div><div style="font-weight:500;font-size:.88rem">Onlayn Müraciət</div><div style="font-size:.78rem;color:rgba(255,255,255,.5)">Formu doldurun</div></div>
+            <div><div style="font-weight:500;font-size:.88rem">Online Başvuru</div><div style="font-size:.78rem;color:rgba(255,255,255,.5)">Formu doldurun</div></div>
           </a>
         </div>
       </div>
@@ -551,12 +637,12 @@ footer{
 
 <footer>
   <div class="footer-logo">YeniDönem <span class="accent">Biorezonans</span></div>
-  <div class="footer-copy">© 2024 YeniDönem Biorezonans. Bütün hüquqlar qorunur. · Bakı, Azərbaycan</div>
+  <div class="footer-copy">© 2026 YeniDönem Biorezonans. Tüm hakları saklıdır. · İstanbul, Türkiye</div>
   <div class="footer-social">
-    <a href="https://instagram.com"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></a>
-    <a href="https://facebook.com"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-    <a href="https://wa.me/994505550000"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></a>
-    <a href="https://tiktok.com"><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg></a>
+    <a href="https://www.instagram.com/yenidonem_rezonans?igsh=MWh0NmRkZzJkMWFqaA=="><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg></a>
+    <a href="https://www.facebook.com/676416458889062/"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+    <a href="https://wa.me/905348491383"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></a>
+    <a href=""><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/></svg></a>
   </div>
 </footer>
 
@@ -564,14 +650,13 @@ footer{
 document.querySelector('.btn-apply').addEventListener('click',function(){
   const name=document.querySelector('input[type="text"]').value;
   const phone=document.querySelector('input[type="tel"]').value;
-  const service=document.querySelector('select').value;
   if(!name||!phone){
-    this.textContent='Ad və telefon daxil edin!';
+    this.textContent='Ad ve telefon girin!';
     this.style.background='#c0392b';
-    setTimeout(()=>{this.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Müraciəti Göndər';this.style.background='';},2000);
+    setTimeout(()=>{this.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Başvuruyu Gönder';this.style.background='';},2000);
     return;
   }
-  this.innerHTML='✓ Müraciətiniz qəbul edildi!';
+  this.innerHTML='✓ Başvurunuz alındı!';
   this.style.background='#27ae60';
   this.disabled=true;
 });
