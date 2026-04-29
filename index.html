@@ -61,7 +61,11 @@ nav{
 .btn-nav:hover{background:var(--sage)}
 
 /* ── Dropdown nav ── */
-.nav-item-dropdown{position:relative}
+.nav-item-dropdown{position:relative;padding-bottom:8px}
+.nav-item-dropdown::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;
+  height:8px;pointer-events:none;
+}
 .nav-item-dropdown > a{
   display:flex;align-items:center;gap:.3rem;
 }
@@ -82,7 +86,8 @@ nav{
 .nav-item-dropdown > a:hover{color:var(--ink)}
 
 .nav-dropdown{
-  position:absolute;top:calc(100% + 14px);left:0;transform:none;
+  position:absolute;top:100%;left:0;transform:none;
+  margin-top:8px;
   background:var(--white);
   border:1px solid var(--border);
   border-radius:10px;
