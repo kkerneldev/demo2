@@ -710,7 +710,7 @@ footer{
       <h3>Bilgiler</h3>
       <div class="contact-item"><div class="c-icon">📍</div><div class="c-text"><strong>Adres</strong>Osmanağa, Bekçi Sk. No:10, 34714 Kadıköy/İstanbul, Türkiye</div></div>
       <div class="contact-item"><div class="c-icon">📞</div><div class="c-text"><strong>Telefon</strong>+90 534 849 13 83</div></div>
-      <div class="contact-item"><div class="c-icon">📧</div><div class="c-text"><strong>E-posta</strong>info@yenidonem.az</div></div>
+      <div class="contact-item"><div class="c-icon">📧</div><div class="c-text"><strong>E-posta</strong><a href="mailto:yenidonemrezonans@gmail.com" style="color:var(--sage);text-decoration:none">yenidonemrezonans@gmail.com</a></div></div>
       <div class="contact-item"><div class="c-icon">🕐</div><div class="c-text"><strong>Çalışma saatleri</strong>Pzt–Cmt: 09:00–18:00 · Paz: Kapalı</div></div>
 
       <div style="margin-top:1.2rem">
@@ -854,5 +854,44 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   wrap.addEventListener('mouseenter', ()=>clearInterval(autoTimer));
   wrap.addEventListener('mouseleave', ()=>{ autoTimer = setInterval(autoPlay, 4500); });
 })();
+
+// ===== STATUS UPDATE =====
+function updateStatus(){
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const currentTime = hours * 60 + minutes; // Convert to minutes for easier comparison
+  
+  // Schedule: Mon-Sat 09:00-18:00 (Open), Sun (Closed)
+  const openTime = 9 * 60;      // 09:00
+  const closeTime = 18 * 60;    // 18:00
+  
+  let isOpen = false;
+  
+  // Sunday (0) is always closed
+  if(day === 0){
+    isOpen = false;
+  } else {
+    // Mon-Sat: check if within business hours
+    isOpen = currentTime >= openTime && currentTime < closeTime;
+  }
+  
+  // Update status text and dot
+  const statusText = document.getElementById('statusText');
+  const statusDot = document.getElementById('statusDot');
+  
+  if(statusText){
+    statusText.textContent = isOpen ? 'Open' : 'Closed';
+  }
+  
+  if(statusDot){
+    statusDot.style.background = isOpen ? '#6EE7A0' : '#E74C3C';
+  }
+}
+
+// Update status on page load and every minute
+updateStatus();
+setInterval(updateStatus, 60000);
 </script>
 </body></html>
