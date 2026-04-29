@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YeniDönem Biorezonans Merkezi</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
@@ -76,7 +82,7 @@ nav{
 .nav-item-dropdown > a:hover{color:var(--ink)}
 
 .nav-dropdown{
-  position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
+  position:absolute;top:calc(100% + 14px);left:0;transform:none;
   background:var(--white);
   border:1px solid var(--border);
   border-radius:10px;
@@ -91,10 +97,10 @@ nav{
 
 /* small arrow above dropdown */
 .nav-dropdown::before{
-  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  content:'';position:absolute;top:-6px;left:20px;
   width:11px;height:11px;background:var(--white);
   border-left:1px solid var(--border);border-top:1px solid var(--border);
-  transform:translateX(-50%) rotate(45deg);
+  transform:rotate(45deg);
 }
 
 .nav-dropdown a{
@@ -324,6 +330,18 @@ h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:400;color
 .btn-apply:hover{background:var(--ink);transform:translateY(-1px)}
 .btn-apply svg{width:16px;height:16px}
 
+/* Form Validation & Status Styles */
+.error-msg{display:block;font-size:.75rem;color:#c0392b;margin-top:.3rem;min-height:1.2rem;font-weight:500}
+.form-group input:invalid:not(:placeholder-shown),.form-group select:invalid:not([value=""]),.form-group textarea:invalid:not(:placeholder-shown){border-color:#c0392b;background:#fff0f0}
+.form-group input:valid:not(:placeholder-shown),.form-group select:valid:not([value=""]),.form-group textarea:valid:not(:placeholder-shown){border-color:var(--sage)}
+.char-count{font-size:.7rem;color:var(--muted);margin-top:.3rem;text-align:right}
+.form-status{padding:1rem;border-radius:4px;margin-bottom:1rem;font-size:.9rem;display:flex;align-items:center;gap:.5rem}
+.form-status.success{background:#E8F9EF;color:#27ae60;border:1px solid #27ae60}
+.form-status.error{background:#FDF5F5;color:#c0392b;border:1px solid #c0392b}
+.btn-apply:disabled{opacity:.6;cursor:not-allowed}
+.btn-apply.loading{animation:pulse-btn .6s infinite}
+@keyframes pulse-btn{0%,100%{opacity:1}50%{opacity:.7}}
+
 .contact-section{padding:5.5rem 3rem;background:var(--white)}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;max-width:900px;margin:3rem auto 0}
 .contact-info h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ink);margin-bottom:1.5rem}
@@ -364,8 +382,75 @@ footer{
 .footer-social a{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:all .2s}
 .footer-social a:hover{border-color:var(--sage);background:rgba(92,138,94,.15)}
 .footer-social svg{width:12px;height:12px;fill:rgba(255,255,255,.4)}
-.footer-social a:hover svg{fill:var(--sage)}
+/* ── Testimonial Slider ── */
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInLeftAnim{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-40px)}}
+@keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+.testi-slider-wrap{
+  position:relative;
+  max-width:680px;
+  margin:3rem auto 0;
+  padding:0 3rem;
+}
+.testi-slider{
+  position:relative;
+  min-height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.testi-slide{
+  position:absolute;
+  width:100%;
+  opacity:0;
+  pointer-events:none;
+  transition:none;
+}
+.testi-slide.active{
+  opacity:1;
+  pointer-events:auto;
+  position:relative;
+  animation:slideInRight .45s cubic-bezier(.22,1,.36,1) both;
+}
+.testi-slide.exit-left{
+  animation:slideOutLeft .35s cubic-bezier(.22,1,.36,1) both;
+  position:absolute;
+}
+.testi-slide.enter-from-left.active{
+  animation:slideInLeftAnim .45s cubic-bezier(.22,1,.36,1) both;
+}
+
+.testi-dots{
+  display:flex;justify-content:center;gap:.5rem;margin-top:2rem;
+}
+.testi-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  cursor:pointer;transition:all .25s;border:none;padding:0;
+}
+.testi-dot.active{
+  background:var(--gold);
+  transform:scale(1.2);
+}
+
+.testi-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.6);
+  font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.testi-arrow:hover{background:rgba(255,255,255,.14);border-color:var(--gold);color:var(--gold)}
+.testi-prev{left:0}
+.testi-next{right:0}
+
 </style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext x='0' y='14' font-size='14'%3E%E2%9C%93%3C/text%3E%3C/svg%3E">
 
 <nav>
   <a class="logo" href="#">
@@ -400,9 +485,9 @@ footer{
         </a>
       </div>
     </li>
-    <li><a href="#">Hakkımızda</a></li>
-    <li><a href="#">Yorumlar</a></li>
-    <li><a href="#">İletişim</a></li>
+    <li><a href="hakkimizda.html">Hakkımızda</a></li>
+    <li><a href="#yorumlar">Yorumlar</a></li>
+    <li><a href="#contact">İletişim</a></li>
   </ul>
   <div class="nav-actions">
     <div class="social-nav">
@@ -488,7 +573,7 @@ footer{
   </div>
 </section>
 
-<section class="about">
+<section class="about" id="about">
   <div class="about-img-side">
     <div class="about-cert">
       <div class="cert-icon">🏆</div>
@@ -517,15 +602,66 @@ footer{
   </div>
 </section>
 
-<section class="testimonials">
+<section class="testimonials" id="yorumlar">
   <div class="section-head">
     <div class="section-tag">Yorumlar</div>
     <h2 style="color:#fff">Müşterilerimiz konuşuyor</h2>
   </div>
-  <div class="testi-grid">
-    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Yıllarca çektiğim baş ağrıları biorezonans seanslarından sonra büyük ölçüde azaldı."</blockquote><div class="testi-author">Aysel K. — İstanbul</div></div>
-    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Alerji testleri hiçbir şey göstermemişti, biorezonans ile gıda uyumsuzluklarımı keşfettim."</blockquote><div class="testi-author">Leyla M. — İstanbul</div></div>
-    <div class="testi-card"><div class="testi-stars">★★★★★</div><blockquote>"Detoks programından sonra enerji seviyem ve uyku kalitem inanılmaz derecede iyileşti."</blockquote><div class="testi-author">Nigar R. — İstanbul</div></div>
+
+  <!-- Testimonial Slider -->
+  <div class="testi-slider-wrap">
+    <div class="testi-slider" id="testiSlider">
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Yıllarca çektiğim baş ağrıları biorezonans seanslarından sonra büyük ölçüde azaldı. Gerçekten mucize gibi hissettim."</blockquote>
+        <div class="testi-author">Aysel K. — İstanbul</div>
+      </div>
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Alerji testleri hiçbir şey göstermemişti, biorezonans ile gıda uyumsuzluklarımı keşfettim. Artık çok daha iyi hissediyorum."</blockquote>
+        <div class="testi-author">Leyla M. — İstanbul</div>
+      </div>
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Detoks programından sonra enerji seviyem ve uyku kalitem inanılmaz derecede iyileşti. Herkese tavsiye ederim."</blockquote>
+        <div class="testi-author">Nigar R. — İstanbul</div>
+      </div>
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Kronik yorgunluk sorunundan kurtulamıyordum. 3 seans sonra kendimi bambaşka hissettim. Ekip gerçekten çok ilgili ve profesyonel."</blockquote>
+        <div class="testi-author">Murat D. — Ankara</div>
+      </div>
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Çocuğumun bağışıklık sistemi çok zayıftı, sürekli hastalanıyordu. Biorezonans seansları sonrası sağlığı çok daha iyi."</blockquote>
+        <div class="testi-author">Fatma Ş. — İzmir</div>
+      </div>
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"Stres ve kaygı bozukluğu için gelmiştim. Seanslar sonrası hem zihinsel hem bedensel olarak çok daha dengeli hissediyorum."</blockquote>
+        <div class="testi-author">Serkan A. — İstanbul</div>
+      </div>
+
+      <div class="testi-card testi-slide">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>"İlk başta şüpheciydim ama sonuçlar beni şaşırttı. Sindirim sorunlarım büyük ölçüde geçti. Bilimsel bir yaklaşımla ele alındım."</blockquote>
+        <div class="testi-author">Zeynep T. — Bursa</div>
+      </div>
+
+    </div>
+
+    <!-- Navigation dots -->
+    <div class="testi-dots" id="testiDots"></div>
+
+    <!-- Prev / Next arrows -->
+    <button class="testi-arrow testi-prev" id="testiPrev" aria-label="Önceki">&#8592;</button>
+    <button class="testi-arrow testi-next" id="testiNext" aria-label="Sonraki">&#8594;</button>
   </div>
 </section>
 
@@ -539,39 +675,27 @@ footer{
       <div class="apply-header-icon">📋</div>
       <div>
         <h3>Başvuru Formu</h3>
-        <p>Formu doldurun, 24 saat içinde sizinle iletişime geçeceğiz</p>
+        <p>Formu doldur ve 24 saat içinde sana yazacağız</p>
       </div>
     </div>
-    <div class="apply-form">
-      <div class="form-row">
-        <div class="form-group"><label>Ad Soyad</label><input type="text" placeholder="Adınız Soyadınız"></div>
-        <div class="form-group"><label>Telefon</label><input type="tel" placeholder="+90 000 000 00 00"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>E-posta</label><input type="email" placeholder="email@example.com"></div>
-        <div class="form-group"><label>Hizmet Seçin</label>
-          <select>
-            <option value="">Seçin...</option>
-            <option>Biorezonans Analizi</option>
-            <option>Detoks Programı</option>
-            <option>Alerji Terapisi</option>
-            <option>Stres &amp; Denge</option>
-            <option>Parazit Terapisi</option>
-            <option>Bağışıklık Desteği</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group"><label>Şikayet / Mesaj</label><textarea placeholder="Sorununuzu kısaca açıklayın..."></textarea></div>
-      <div class="form-note">🔒 Bilgileriniz gizli tutulmaktadır. Başvurunuzdan sonra 24 saat içinde sizinle iletişime geçeceğiz.</div>
-      <button class="btn-apply">
+    <div class="apply-form" style="display:flex;flex-direction:column;gap:1.5rem;align-items:center;justify-content:center;padding:3rem;">
+      <p style="text-align:center;color:var(--muted);font-size:1rem;max-width:400px;">
+        Başvuru formunu Google Docs'ta doldurmak için aşağıdaki düğmeye tıkla
+      </p>
+      
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfLBiWnhyMvGjMQbIAJpO1dXtLmobxC3r1TUrqXihzSNVlgjw/viewform" target="_blank" class="btn-apply" style="display:inline-flex;text-decoration:none;background:var(--sage);color:var(--white);padding:.9rem 2.5rem;border-radius:4px;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;transition:all .25s;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-        Başvuruyu Gönder
-      </button>
+        <span>Google Docs'ta Aç</span>
+      </a>
+      
+      <div class="form-note" style="text-align:center;padding:1rem;background:var(--sage-pale);border-radius:4px;border-left:3px solid var(--sage);">
+        🔒 Tüm bilgileriniz gizli tutulmaktadır. Başvuru sonrası 24 saat içinde sizinle iletişime geçeceğiz.
+      </div>
     </div>
   </div>
 </section>
 
-<section class="contact-section">
+<section class="contact-section" id="contact">
   <div class="section-head">
     <div class="section-tag">İletişim</div>
     <h2>Bizimle iletişime geçin</h2>
@@ -647,24 +771,83 @@ footer{
 </footer>
 
 <script>
-document.querySelector('.btn-apply').addEventListener('click',function(){
-  const name=document.querySelector('input[type="text"]').value;
-  const phone=document.querySelector('input[type="tel"]').value;
-  if(!name||!phone){
-    this.textContent='Ad ve telefon girin!';
-    this.style.background='#c0392b';
-    setTimeout(()=>{this.innerHTML='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Başvuruyu Gönder';this.style.background='';},2000);
-    return;
-  }
-  this.innerHTML='✓ Başvurunuz alındı!';
-  this.style.background='#27ae60';
-  this.disabled=true;
-});
-
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const target=document.querySelector(a.getAttribute('href'));
-    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'})}
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if(href === '#') return;
+    const target = document.querySelector(href);
+    if(target){
+      e.preventDefault();
+      const navH = document.querySelector('nav')?.offsetHeight || 0;
+      const top = target.getBoundingClientRect().top + window.scrollY - navH - 12;
+      window.scrollTo({top, behavior:'smooth'});
+    }
   });
 });
+
+// ===== TESTIMONIAL SLIDER =====
+(function(){
+  const slides = Array.from(document.querySelectorAll('.testi-slide'));
+  const dotsWrap = document.getElementById('testiDots');
+  const prevBtn = document.getElementById('testiPrev');
+  const nextBtn = document.getElementById('testiNext');
+  if(!slides.length) return;
+
+  let current = 0;
+  let autoTimer;
+  let direction = 1; // 1 = next, -1 = prev
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'testi-dot' + (i===0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i, i > current ? 1 : -1));
+    dotsWrap.appendChild(d);
+  });
+
+  function updateDots(idx){
+    dotsWrap.querySelectorAll('.testi-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  }
+
+  function goTo(next, dir=1){
+    if(next === current) return;
+    const prev = current;
+    current = (next + slides.length) % slides.length;
+    direction = dir;
+
+    // Exit animation on old
+    slides[prev].classList.add(dir > 0 ? 'exit-left' : 'exit-right');
+    slides[prev].addEventListener('animationend', function onEnd(){
+      slides[prev].classList.remove('active','exit-left','exit-right');
+      slides[prev].removeEventListener('animationend', onEnd);
+    });
+
+    // Enter animation on new
+    slides[current].classList.toggle('enter-from-left', dir < 0);
+    slides[current].classList.add('active');
+    slides[current].addEventListener('animationend', function onEnter(){
+      slides[current].classList.remove('enter-from-left');
+      slides[current].removeEventListener('animationend', onEnter);
+    });
+
+    updateDots(current);
+  }
+
+  // Init first
+  slides[0].classList.add('active');
+
+  prevBtn.addEventListener('click', () => { resetAuto(); goTo(current - 1, -1); });
+  nextBtn.addEventListener('click', () => { resetAuto(); goTo(current + 1, 1); });
+
+  function autoPlay(){ goTo(current + 1, 1); }
+  function resetAuto(){ clearInterval(autoTimer); autoTimer = setInterval(autoPlay, 4500); }
+  autoTimer = setInterval(autoPlay, 4500);
+
+  // Pause on hover
+  const wrap = document.getElementById('testiSlider').closest('.testi-slider-wrap');
+  wrap.addEventListener('mouseenter', ()=>clearInterval(autoTimer));
+  wrap.addEventListener('mouseleave', ()=>{ autoTimer = setInterval(autoPlay, 4500); });
+})();
 </script>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teşekkürler - Yeni Dönem Biorezonans</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            background: linear-gradient(135deg, #5C8A5E 0%, #0E1A0F 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(14, 26, 15, 0.2);
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 500px;
+        }
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease-out;
+        }
+        h1 {
+            font-size: 28px;
+            color: #0E1A0F;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #6B6560;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .btn {
+            display: inline-block;
+            background: #5C8A5E;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #0E1A0F;
+            transform: translateY(-2px);
+        }
+        .details {
+            background: #EBF3EB;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        .details p {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        @keyframes bounce {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { opacity: 1; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">✓</div>
+        <h1>Başvurunuz Alındı!</h1>
+        <p>Teşekkürler. Formu gönderdiğiniz için çok mutluyuz. En kısa sürede sizinle iletişime geçeceğiz.</p>
+        
+        <div class="details">
+            <p><strong>📞 Telefon:</strong> +90 534 849 13 83</p>
+            <p><strong>📧 E-posta:</strong> info@yenidonem.az</p>
+            <p><strong>⏱️ Bekleme Süresi:</strong> 24 saat içinde cevap</p>
+        </div>
+        
+        <a href="/" class="btn">← Ana Sayfaya Dön</a>
+    </div>
+</body>
+</html>
